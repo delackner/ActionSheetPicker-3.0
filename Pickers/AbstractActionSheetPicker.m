@@ -63,6 +63,8 @@ CG_INLINE BOOL isIPhone4()
 @property(nonatomic, strong) UIPopoverController *popOverController;
 @property(nonatomic, strong) NSObject *selfReference;
 
+- (void)presentPickerForView:(UIView *)aView;
+
 - (void)configureAndPresentPopoverForView:(UIView *)aView;
 
 - (void)configureAndPresentActionSheetForView:(UIView *)aView;
@@ -70,8 +72,6 @@ CG_INLINE BOOL isIPhone4()
 - (void)presentActionSheet:(SWActionSheet *)actionSheet;
 
 - (void)presentPopover:(UIPopoverController *)popover;
-
-- (void)dismissPicker;
 
 - (BOOL)isViewPortrait;
 
@@ -562,6 +562,30 @@ CG_INLINE BOOL isIPhone4()
     [UIView beginAnimations:nil context:nil];
 //    _actionSheet.bounds = CGRectMake(0, 0, self.viewSize.width, sheetHeight);
     [UIView commitAnimations];
+    
+    if (_mimicKeyboard) {
+        [self applyKeyboardLayoutForView:aView];
+    }
+}
+
+- (void) applyKeyboardLayoutForView:(UIView *)aView {
+    UIView *inner = aView.superview;
+    UIView *outer = inner.superview;
+    UIView *w = aView.window;
+    CGRect f = w.bounds;
+    CGFloat h = aView.frame.size.height;
+    f.origin.y = f.size.height - h;
+    f.size.height = h;
+    w.frame = f;
+    
+    for (UIView *v in @[outer, inner]) {
+        f = v.frame;
+        f.origin.y = 0;
+        f.size.height = h;
+        v.frame = f;
+    }
+    
+    outer.backgroundColor = inner.backgroundColor = [UIColor whiteColor];
 }
 
 - (void) didRotate:(NSNotification *)notification

@@ -61,6 +61,7 @@ static NSString *const kActionTarget  = @"buttonActionTarget";
 @property (nonatomic, strong) NSMutableArray *customButtons;
 @property (nonatomic, assign) BOOL hideCancel;
 @property (nonatomic, assign) CGRect presentFromRect;
+@property (nonatomic, assign) BOOL mimicKeyboard; // if TRUE there will be no gray overlay on the ActionSheet
 @property (nonatomic) NSDictionary *titleTextAttributes; // default is nil. Used to specify Title Label attributes.
 @property (nonatomic) NSAttributedString *attributedTitle; // default is nil. If titleTextAttributes not nil this value ignorred.
 @property (nonatomic, retain) Class popoverBackgroundViewClass; //allow popover customization on iPad
@@ -80,8 +81,6 @@ static NSString *const kActionTarget  = @"buttonActionTarget";
 
     // For subclasses.  This returns a configured picker view.  Subclasses should autorelease.
 - (UIView *)configuredPickerView;
-
-- (void)presentPickerForView:(UIView *)aView;
 
     // Adds custom buttons to the left of the UIToolbar that select specified values
 - (void)addCustomButtonWithTitle:(NSString *)title value:(id)value;
@@ -103,5 +102,8 @@ static NSString *const kActionTarget  = @"buttonActionTarget";
 
     // Hide picker programmatically
 - (void) hidePickerWithCancelAction;
+
+    //This will NOT trigger the done or cancel actions
+- (void)dismissPicker;
 
 @end
