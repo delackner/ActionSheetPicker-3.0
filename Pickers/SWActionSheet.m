@@ -144,10 +144,22 @@ static const enum UIViewAnimationOptions options = UIViewAnimationOptionCurveEas
     CGPoint toPoint;
     CGFloat y = self.center.y - CGRectGetHeight(view.frame);
     toPoint = CGPointMake(self.center.x, y);
+
+    UIColor *targetColor = nil;
+    
+    // If someone customizes the background color after init,
+    // respect the color they have chosen
+    if (0 == CGColorGetAlpha(self.backgroundColor.CGColor)) {
+        targetColor = [UIColor colorWithWhite:0.f alpha:0.5f];
+    } else {
+        targetColor = self.backgroundColor;
+        self.backgroundColor = [UIColor colorWithWhite:0.f alpha:0.f];
+    }
+
     // Present actions
     void (^animations)() = ^{
         self.center = toPoint;
-        self.backgroundColor = [UIColor colorWithWhite:0.f alpha:0.5f];
+        self.backgroundColor = targetColor;
     };
     // Present sheet
     if (animated)

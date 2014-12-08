@@ -63,8 +63,6 @@ CG_INLINE BOOL isIPhone4()
 @property(nonatomic, strong) UIPopoverController *popOverController;
 @property(nonatomic, strong) NSObject *selfReference;
 
-- (void)presentPickerForView:(UIView *)aView;
-
 - (void)configureAndPresentPopoverForView:(UIView *)aView;
 
 - (void)configureAndPresentActionSheetForView:(UIView *)aView;
