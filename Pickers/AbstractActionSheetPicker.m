@@ -563,14 +563,13 @@ CG_INLINE BOOL isIPhone4()
 //    _actionSheet.bounds = CGRectMake(0, 0, self.viewSize.width, sheetHeight);
     [UIView commitAnimations];
     
-    if (_mimicKeyboard) {
+    if (_mimicKeyboard && !IS_IPAD) {
         [self applyKeyboardLayoutForView:aView];
     }
 }
 
 - (void) applyKeyboardLayoutForView:(UIView *)aView {
-    UIView *inner = aView.superview;
-    UIView *outer = inner.superview;
+    UIView *outer = _actionSheet.superview;
     UIView *w = aView.window;
     CGRect f = w.bounds;
     CGFloat h = aView.frame.size.height;
@@ -578,14 +577,14 @@ CG_INLINE BOOL isIPhone4()
     f.size.height = h;
     w.frame = f;
     
-    for (UIView *v in @[outer, inner]) {
+    for (UIView *v in @[outer, _actionSheet]) {
         f = v.frame;
         f.origin.y = 0;
         f.size.height = h;
         v.frame = f;
     }
     
-    outer.backgroundColor = inner.backgroundColor = [UIColor whiteColor];
+    outer.backgroundColor = _actionSheet.backgroundColor = [UIColor whiteColor];
 }
 
 - (void) didRotate:(NSNotification *)notification
